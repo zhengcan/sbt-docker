@@ -13,23 +13,17 @@ RUN \
   aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
   tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
   rm sbt-$SBT_VERSION.tgz && \
-  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt
-
+  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
 # Install Preloaded
-RUN \
   mkdir -p ~/.ivy2/local && \
-  mv /opt/sbt/lib/local-preloaded/* ~/.ivy2/local
-
+  mv /opt/sbt/lib/local-preloaded/* ~/.ivy2/local && \
 # Coursier
-RUN \
   if [ "$SBT_COURSIER_VERSION" != "" ]; then \
   	mkdir -p ~/.sbt/1.0/plugins && \
   	echo "addSbtPlugin(\"io.get-coursier\" % \"sbt-coursier\" % \"$SBT_COURSIER_VERSION\")" >> ~/.sbt/1.0/plugins/plugins.sbt && \
   	echo 'classpathTypes += "maven-plugin"' >> ~/.sbt/1.0/sbt-coursier.sbt; \
-  fi
-
+  fi && \
 # Warm Up
-RUN \
   mkdir -p ./app/project ./app/src/main/scala && cd ./app && \
   echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \

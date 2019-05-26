@@ -12,19 +12,15 @@ RUN \
   aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
   tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
   rm sbt-$SBT_VERSION.tgz && \
-  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt
-
+  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
 # Warm Up
-RUN \
   mkdir -p ./app/project ./app/src/main/scala && cd ./app && \
   echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \
   echo 'case object Temp;' >> src/main/scala/Temp.scala && \
   sbt compile && \
-  cd .. && rm -rf ./app
-
+  cd .. && rm -rf ./app && \
 # Clean Up
-RUN \
   rm -rf /opt/sbt/lib/local-preloaded && \
   rm -rf ~/.sbt/preloaded && \
   rm -rf ~/.ivy2
