@@ -7,7 +7,7 @@ RUN	\
   mkdir -p /opt
 
 ENV SBT_VERSION 1.2.8
-ENV SBT_COURSIER_VERSION 1.1.0-M14-2
+ENV SBT_COURSIER_VERSION 1.1.0-M14-4
 
 RUN \
   aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
