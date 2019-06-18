@@ -6,7 +6,7 @@ RUN	\
   apt-get update && apt-get install aria2 rsync --yes && \
   mkdir -p /opt
 
-ENV SBT_VERSION 1.3.0-RC1
+ENV SBT_VERSION 1.3.0-RC2
 
 RUN \
   aria2c --max-connection-per-server=4 --min-split-size=1M https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
