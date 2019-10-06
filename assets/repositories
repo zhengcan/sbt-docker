@@ -1,0 +1,8 @@
+[repositories]
+local
+local-preloaded-ivy: file:///opt/sbt/lib/local-preloaded/, [organization]/[module]/[revision]/[type]s/[artifact](-[classifier]).[ext]
+local-preloaded: file:///opt/sbt/lib/local-preloaded/
+maven-local
+maven-central
+
+

@@ -1,0 +1,23 @@
+# Dockerfile Template #
+
+FROM openjdk:11
+
+ARG SBT_VERSION=1.3.2
+ARG SBT_FILE=sbt-${SBT_VERSION}.tgz
+ADD ./assets/${SBT_FILE} /opt
+COPY ./assets/repositories /root/.sbt/repositories
+ENV SBT_VERSION ${SBT_VERSION}
+
+RUN \
+  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
+# Warm Up
+  mkdir -p ./app/project ./app/src/main/scala && cd ./app && \
+  echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
+  echo 'lazy val root = (project in file("."))' >> build.sbt && \
+  echo 'libraryDependencies += "org.slf4j:slf4j-api;1.7.25"' >> build.sbt && \
+  echo 'case object Temp;' >> src/main/scala/Temp.scala && \
+  sbt compile && sbt compile && sbt compile && \
+  cd .. && rm -rf ./app
+
+CMD ["sbt"]
+
