@@ -24,6 +24,16 @@ RUN \
   echo ')' >> build.sbt && \
   echo 'case object Temp;' >> src/main/scala/Temp.scala && \
   sbt compile && sbt compile && sbt compile && \
+  cd .. && rm -rf ./app && \
+# Warm Up
+  mkdir -p ./app/project ./app/src/main/scala && cd ./app && \
+  echo "sbt.version=1.2.8" >> project/build.properties && \
+  echo 'lazy val root = (project in file("."))' >> build.sbt && \
+  echo 'libraryDependencies ++= Seq(' >> build.sbt && \
+  echo '  "org.slf4j" % "slf4j-api" % "1.7.25",' >> build.sbt && \
+  echo ')' >> build.sbt && \
+  echo 'case object Temp;' >> src/main/scala/Temp.scala && \
+  sbt compile && sbt compile && sbt compile && \
   cd .. && rm -rf ./app
 
 CMD ["sbt"]
