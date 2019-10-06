@@ -9,6 +9,11 @@ COPY ./assets/repositories /root/.sbt/repositories
 ENV SBT_VERSION ${SBT_VERSION}
 
 RUN \
+  if [ ! -f /opt/sbt/bin/sbt ]; then \
+    wget https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
+    tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
+    rm sbt-$SBT_VERSION.tgz; \
+  fi && \
   ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
 # Warm Up
   mkdir -p ./app/project ./app/src/main/scala && cd ./app && \
