@@ -10,6 +10,11 @@ ENV SBT_VERSION ${SBT_VERSION}
 ENV SBT_COURSIER_VERSION 1.1.0-M14-4
 
 RUN \
+  if [ ! -f /opt/sbt/bin/sbt ]; then \
+    wget https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
+    tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
+    rm sbt-$SBT_VERSION.tgz; \
+  fi && \
   ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
 # Coursier
   if [ "$SBT_COURSIER_VERSION" != "" ]; then \
