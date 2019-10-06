@@ -27,7 +27,7 @@ RUN \
   echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \
   echo 'case object Temp;' >> src/main/scala/Temp.scala && \
-  sbt compile && sbt compile && sbt compile && \
+  (sbt compile || true) && (sbt compile || true) && sbt compile && \
   cd .. && rm -rf ./app
 
 CMD ["sbt"]
