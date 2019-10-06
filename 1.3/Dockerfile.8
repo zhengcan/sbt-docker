@@ -4,9 +4,11 @@ FROM openjdk:8
 
 ARG SBT_VERSION=1.3.2
 ARG SBT_FILE=sbt-${SBT_VERSION}.tgz
+ENV SBT_VERSION ${SBT_VERSION}
+
 ADD ./assets/${SBT_FILE} /opt
 COPY ./assets/repositories /root/.sbt/repositories
-ENV SBT_VERSION ${SBT_VERSION}
+COPY ./assets/sbt.sh /usr/local/bin/sbt
 
 RUN \
   if [ ! -f /opt/sbt/bin/sbt ]; then \
@@ -14,14 +16,10 @@ RUN \
     tar xfz sbt-$SBT_VERSION.tgz -C /opt/ && \
     rm sbt-$SBT_VERSION.tgz; \
   fi && \
-  ln -s /opt/sbt/bin/sbt /usr/local/bin/sbt && \
 # Warm Up
   mkdir -p ./app/project ./app/src/main/scala && cd ./app && \
   echo "sbt.version=$SBT_VERSION" >> project/build.properties && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \
-  echo 'libraryDependencies ++= Seq(' >> build.sbt && \
-  echo '  "org.slf4j" % "slf4j-api" % "1.7.25",' >> build.sbt && \
-  echo ')' >> build.sbt && \
   echo 'case object Temp;' >> src/main/scala/Temp.scala && \
   (sbt compile || true) && (sbt compile || true) && sbt compile && \
   cd .. && rm -rf ./app && \
@@ -29,14 +27,9 @@ RUN \
   mkdir -p ./app/project ./app/src/main/scala && cd ./app && \
   echo "sbt.version=1.2.8" >> project/build.properties && \
   echo 'lazy val root = (project in file("."))' >> build.sbt && \
-  echo 'libraryDependencies ++= Seq(' >> build.sbt && \
-  echo '  "org.slf4j" % "slf4j-api" % "1.7.25",' >> build.sbt && \
-  echo ')' >> build.sbt && \
   echo 'case object Temp;' >> src/main/scala/Temp.scala && \
   (sbt compile || true) && (sbt compile || true) && sbt compile && \
   cd .. && rm -rf ./app
 
-COPY ./assets/init_cache.sh /root/init_cache.sh
-
-CMD ["/root/init_cache.sh"]
+CMD ["sbt"]
 

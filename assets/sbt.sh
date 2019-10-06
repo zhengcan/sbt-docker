@@ -26,3 +26,4 @@ if [[ -d ${CACHE_DIR} ]]; then
   ln -s ${CACHE_DIR}/.sbt /root/.sbt
 fi
 
+/opt/sbt/bin/sbt "$@"
