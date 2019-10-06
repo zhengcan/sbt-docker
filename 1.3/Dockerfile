@@ -36,5 +36,7 @@ RUN \
   (sbt compile || true) && (sbt compile || true) && sbt compile && \
   cd .. && rm -rf ./app
 
-CMD ["sbt"]
+COPY ./assets/init_cache.sh /root/init_cache.sh
+
+CMD ["/root/init_cache.sh"]
 
